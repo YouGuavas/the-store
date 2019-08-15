@@ -1,4 +1,4 @@
-## Fullstack Boilerplate
+## The Store
 ### Setup
 
 1. git clone https://github.com/YouGuavas/fullstack-boilerplate.git && cd fullstack-boilerplate
