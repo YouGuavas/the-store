@@ -14,6 +14,7 @@ const mongoURI = `mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${
 router.get('/', (req, res) => {
 	res.send('hello world');
 });
+
 router.get('/products', (req, res) => {
 	mongo.connect(mongoURI, (err, client) => {
 		if (err) throw err;
@@ -28,23 +29,28 @@ router.get('/products', (req, res) => {
 		});
 	})
 });
+
 router.post('/newproduct', (req, res) => {
 	const titleCase = (title) => {
-		console.log(title);
 		return title.toLowerCase().split(' ').map((word, index) => {
 			const noCaps = ['a', 'for', 'of', 'the'];
 			if (index === 0 || noCaps.indexOf(word) === -1) return word.replace(word[0], word[0].toUpperCase());
 			else return word;
 		}).join(' ');
 	}
+	const priceCase = (price) => {
+		let newPrice = price;
+		if (price.indexOf('$') === -1) newPrice = `$${newPrice}`;
+		if (price.indexOf('.') === -1) newPrice = `${newPrice}.00`;
+		return newPrice;
+	}
 	mongo.connect(mongoURI, (err, client) => {
 		if (err) throw err;
 		const db = client.db(process.env.DB_NAME);
 		const collection = db.collection(process.env.COLLECTION);
-		console.log(req.body);
 		collection.insert({
 			name: titleCase(req.body.name),
-			price: req.body.price,
+			price: priceCase(req.body.price),
 			image: req.body.image,
 			description: req.body.description
 		});

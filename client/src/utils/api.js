@@ -13,8 +13,7 @@ const getProducts = function() {
 const postProduct = function(data) {
   const url = `${BASE_URL}/api/newproduct`;
   const {name, price, image, description} = data;
-  console.log(data);
-  //return axios.post(url, {name, price, image, description}).then(res => res.data);
+  return axios.post(url, {name, price, image, description}).then(res => res.data);
 
 }
 export {getProducts, postProduct};
