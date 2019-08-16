@@ -1,5 +1,4 @@
 import axios from 'axios';
-const dotenv = require('dotenv').config();
 
 const environment = process.env.NODE_ENV;
 let BASE_URL; 
