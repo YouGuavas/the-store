@@ -2,7 +2,9 @@ import React from 'react';
 
 const Nav = () => {
   return(
-    <div></div>
+    <div className='nav'>
+      the-store
+    </div>
   )
 }
 export default Nav;
