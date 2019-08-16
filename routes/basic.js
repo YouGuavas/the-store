@@ -28,6 +28,28 @@ router.get('/products', (req, res) => {
 		});
 	})
 });
-
+router.post('/newproduct', (req, res) => {
+	const titleCase = (title) => {
+		console.log(title);
+		return title.toLowerCase().split(' ').map((word, index) => {
+			const noCaps = ['a', 'for', 'of', 'the'];
+			if (index === 0 || noCaps.indexOf(word) === -1) return word.replace(word[0], word[0].toUpperCase());
+			else return word;
+		}).join(' ');
+	}
+	mongo.connect(mongoURI, (err, client) => {
+		if (err) throw err;
+		const db = client.db(process.env.DB_NAME);
+		const collection = db.collection(process.env.COLLECTION);
+		console.log(req.body);
+		collection.insert({
+			name: titleCase(req.body.name),
+			price: req.body.price,
+			image: req.body.image,
+			description: req.body.description
+		});
+		client.close();
+	})
+});
 
 module.exports = router;
