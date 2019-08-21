@@ -26,6 +26,7 @@ app.use(express.static(path.join(__dirname, "client")));
 app.use(express.static(path.join(__dirname, "client", filePath)));
 
 app.use('/api', routes);
+app.use('/uploads', express.static('uploads'));
 app.get("*", (req, res) => {
 	res.sendFile(path.join(__dirname, "client", filePath, "index.html"));
 });

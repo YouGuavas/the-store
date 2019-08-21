@@ -29,7 +29,7 @@ export default class Main extends Component {
         this.state.products.map((item, index) => 
           (
             <div key={index} className='container card col-sm-3 product'>
-              <h5 className='card-title'>{item.name}</h5>
+              <h5 className='card-title'><a href='#'>{item.name}</a></h5>
               <img className='row img-thumbnail img-fluid mx-auto' src={image}/>
               <div className='card-body'>
                 <h6 className='card-subtitle'>{item.price}</h6>
