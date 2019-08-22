@@ -10,44 +10,55 @@ export default class Admin extends Component {
       isPriceValid: false,
       isImageValid: false,
       isDescriptionValid: false,
-      data: []
+      image: null,
+      name: '',
+      price: '',
+      description: ''
     }
   }
   postProduct = (data) => {
     postProduct(data).then((res) => {
-      console.log(res);
-      const fields = ['name', 'price', 'description'];
+      const fields = ['name', 'price', 'image', 'description'];
       fields.map(field => {
-        console.log(field);
         document.getElementById(field).value = '';
+        return field;
       })
     });
   }
+  handleText = (e) => {
+    const key = e.target.id;
+    this.setState({
+      [key]: e.target.value
+    })
+  }
+  handleChange = (e) => {
+    this.setState({
+      image: e.target.files[0]
+    })
+  }
   handleClick = () => {
-    const name = document.getElementById('name').value;
-    const price = document.getElementById('price').value;
-    const imageField = document.getElementById('image');
-    const image = imageField.value;
-    const imageFiles = imageField.files[0];
-    const description = document.getElementById('description').value;
-    const data = {name, price, image: {name: image, imageData: imageFiles}, description};
-    
+    const {name, price, description, image} = this.state;
+    let imageName;
+    if (image) imageName = image.name;
     let {isNameValid, isPriceValid, isImageValid, isDescriptionValid} = this.state;
-    const fieldValidity = checkForm({name, price, image, description, isNameValid, isPriceValid, isImageValid, isDescriptionValid});
-    console.log(fieldValidity);
+    const fieldValidity = checkForm({name, price, imageName, description, isNameValid, isPriceValid, isImageValid, isDescriptionValid});
     this.setState({
       isNameValid: fieldValidity.isNameValid,
       isPriceValid: fieldValidity.isPriceValid,
       isImageValid: fieldValidity.isImageValid,
-      isDescriptionValid: fieldValidity.isDescriptionValid,
-      data
+      isDescriptionValid: fieldValidity.isDescriptionValid
     }, () => {
       let isFormValid = false;
-      console.log(this.state);
-      const {isNameValid, isPriceValid, isImageValid, isDescriptionValid, data} = this.state;
+      const {isNameValid, isPriceValid, isImageValid, isDescriptionValid, name, price, image, description} = this.state;
+      const data = new FormData();
+      const dataArray = [['name', name], ['price', price], ['image', image], ['description', description]];
+
       if (isNameValid && isPriceValid && isImageValid && isDescriptionValid ) isFormValid = true;
       //if all fields are valid, form is valid
       !isFormValid && alert('Form is incomplete!')
+      dataArray.map(item => {
+        data.append(item[0], item[1]);
+      });
       isFormValid && this.postProduct(data);
       //if form is valid, upload data
     })
@@ -56,10 +67,10 @@ export default class Admin extends Component {
     return(
       <form>
         <h1>Admin</h1>
-        <h3>Product</h3><input type='text' id='name'/>
-        <h3>Price</h3><input type='text' id='price'/>
-        <h3>Image</h3><input type='file' accept='image/*' id='image'/>
-        <h3>Description</h3><input type='textarea' id='description'/>
+        <h3>Product</h3><input type='text' id='name' onChange={this.handleText}/>
+        <h3>Price</h3><input type='text' id='price' onChange={this.handleText}/>
+        <h3>Image</h3><input type='file' accept='image/*' id='image' onChange={this.handleChange}/>
+        <h3>Description</h3><input type='textarea' id='description' onChange={this.handleText}/>
         <input type='button' value='submit' onClick={this.handleClick}/>
       </form>
     )
