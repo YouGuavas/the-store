@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const formData = require('express-form-data')
+
 const dotenv = require('dotenv').config();
 const routes = require('./routes/basic');
 const path = require('path');
@@ -25,6 +27,7 @@ app.use(cors(corsOption));
 app.use(express.static(path.join(__dirname, "client")));
 app.use(express.static(path.join(__dirname, "client", filePath)));
 
+app.use(formData.parse());
 app.use('/api', routes);
 app.use('/uploads', express.static('uploads'));
 app.get("*", (req, res) => {

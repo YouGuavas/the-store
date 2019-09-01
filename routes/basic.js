@@ -75,13 +75,13 @@ router.post('/newproduct', (req, res) => {
 		if (err) throw err;
 		const db = client.db(process.env.DB_NAME);
 		const collection = db.collection(process.env.COLLECTION);
+		console.log(req.body);
 		/*collection.insert({
 			name: titleCase(req.body.name),
 			price: priceCase(req.body.price),
 			image: req.body.image,
 			description: req.body.description
 		});*/
-		console.log(req.body.image.imageData);
 		client.close();
 	})
 });

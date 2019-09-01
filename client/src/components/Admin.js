@@ -52,12 +52,12 @@ export default class Admin extends Component {
       const {isNameValid, isPriceValid, isImageValid, isDescriptionValid, name, price, image, description} = this.state;
       const data = new FormData();
       const dataArray = [['name', name], ['price', price], ['image', image], ['description', description]];
-
       if (isNameValid && isPriceValid && isImageValid && isDescriptionValid ) isFormValid = true;
       //if all fields are valid, form is valid
       !isFormValid && alert('Form is incomplete!')
       dataArray.map(item => {
         data.append(item[0], item[1]);
+        return null;
       });
       isFormValid && this.postProduct(data);
       //if form is valid, upload data
